@@ -1,7 +1,9 @@
 <?php
 
 declare(strict_types=1);
+
 namespace MicroPHP\Swoole;
+
 use MicroPHP\Framework\Http\Contract\HttpServerInterface;
 use MicroPHP\Framework\Http\ServerConfig;
 use MicroPHP\Framework\Http\ServerRequest;
@@ -14,6 +16,7 @@ use Swoole\Http\Server;
 class SwooleHttpServer implements HttpServerInterface
 {
     use HttpServerTrait;
+
     public function run(Router $router): void
     {
         $serverConfig = new ServerConfig();
@@ -22,7 +25,7 @@ class SwooleHttpServer implements HttpServerInterface
             'worker_num' => $serverConfig->getWorkers(),
         ]);
 
-        $http->on('Request', function (Request $request, Response $response) use($router) {
+        $http->on('Request', function (Request $request, Response $response) use ($router) {
             $psr7Request = ServerRequest::fromSwoole($request);
             $psr7Response = $this->routeDispatch($router, $psr7Request);
             foreach ($psr7Response->getHeaders() as $name => $value) {
