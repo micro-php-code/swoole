@@ -12,8 +12,8 @@
             "email": "gg.cn.lt@gmail.com"
         }
     ],
-    "require": {},
-    "require-dev": {
+    "require": {
+        "ext-swoole": ">=4.8",
         "swoole/ide-helper": ">=4.8"
     }
 }
