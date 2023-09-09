@@ -23,7 +23,7 @@ class SwooleHttpServer implements HttpServerInterface
         $http = new Server($serverConfig->getHost(), $serverConfig->getPort());
         $this->createRuntimeDir();
         $http->set([
-            'enable_coroutine' => true,
+            'enable_coroutine' => false,
             'worker_num' => $serverConfig->getWorkers(),
             'open_tcp_nodelay' => true,
             'max_coroutine' => 10000,
