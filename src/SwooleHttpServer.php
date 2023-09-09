@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MicroPHP\Swoole;
 
+use MicroPHP\Framework\Config\Config;
 use MicroPHP\Framework\Http\Contract\HttpServerInterface;
 use MicroPHP\Framework\Http\ServerConfig;
 use MicroPHP\Framework\Http\ServerRequest;
@@ -22,17 +23,9 @@ class SwooleHttpServer implements HttpServerInterface
         $serverConfig = new ServerConfig();
         $http = new Server($serverConfig->getHost(), $serverConfig->getPort());
         $this->createRuntimeDir();
-        $http->set([
-            'enable_coroutine' => false,
-            'worker_num' => $serverConfig->getWorkers(),
-            'open_tcp_nodelay' => true,
-            'max_coroutine' => 10000,
-            'max_request' => 10000,
-            'socket_buffer_size' => 1024 * 1024 * 2,
-            'buffer_output_size' => 1024 * 1024 * 2,
-            'hook_flags' => SWOOLE_HOOK_ALL,
-            'pid_file' => base_path('runtime/microphp.pid'),
-        ]);
+        $config = Config::get('swoole', []);
+        $config['worker_num'] = $serverConfig->getWorkers();
+        $http->set($config);
 
         $http->on('Request', function (Request $request, Response $response) use ($router) {
             $psr7Request = ServerRequest::fromSwoole($request);
