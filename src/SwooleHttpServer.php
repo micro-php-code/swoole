@@ -33,6 +33,7 @@ class SwooleHttpServer implements HttpServerInterface
             foreach ($psr7Response->getHeaders() as $name => $value) {
                 $response->header($name, $value);
             }
+            $response->setStatusCode($psr7Response->getStatusCode());
             $response->end($psr7Response->getBody());
         });
         $http->start();
