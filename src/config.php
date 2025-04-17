@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Swoole\Server;
+
 return [
     // 不开启协程就如同workerman一样
     'enable_coroutine' => true,
@@ -26,4 +28,7 @@ return [
     'reload_async' => true,
     'hook_flags' => SWOOLE_HOOK_ALL,
     'pid_file' => base_path('runtime/microphp.pid'),
+    'callback' => [
+        'ManagerStart' => static function (Server $server) {},
+    ],
 ];
